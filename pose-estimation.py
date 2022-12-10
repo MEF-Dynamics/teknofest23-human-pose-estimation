@@ -36,8 +36,6 @@ if __name__ == "__main__":
     frame_size = (width, height)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
-    video_output = cv2.VideoWriter('output.mp4', fourcc, fps, frame_size)
-
     while cap.isOpened():
         success, image = cap.read()
         if not success:
@@ -86,7 +84,6 @@ if __name__ == "__main__":
         except:
             pass
         
-        video_output.write(image)
         cv2.imshow('MediaPipe Pose', image)
         if cv2.waitKey(5) & 0xFF == ord('q'):
             break
