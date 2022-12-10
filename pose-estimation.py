@@ -1,5 +1,6 @@
 import cv2
 import math
+import numpy as np
 import mediapipe as mp
 
 def findDistance(x1, y1, x2, y2):
@@ -25,12 +26,19 @@ pink = (255, 0, 255)
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 
+logo = cv2.imread('logo.png')
+logo_height, logo_width, _ = logo.shape
+logo_dvider = 25
+logo_height = int(logo_height / logo_dvider)
+logo_width = int(logo_width / logo_dvider)
+logo = cv2.resize(logo, (logo_width, logo_height))
+
+logo_gray = cv2.cvtColor(logo, cv2.COLOR_BGR2GRAY)
+
 if __name__ == "__main__":
     # 0           -> webcam
     # 'video.mp4' -> video file
     cap = cv2.VideoCapture(0)
-
-    fps = int(cap.get(cv2.CAP_PROP_FPS))
 
     while cap.isOpened():
         success, image = cap.read()
@@ -38,7 +46,6 @@ if __name__ == "__main__":
             print("Null.Frames")
             break
         try:
-            fps = cap.get(cv2.CAP_PROP_FPS)
             h, w = image.shape[:2]
 
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -80,6 +87,9 @@ if __name__ == "__main__":
         except:
             pass
         
+        roi = image[0:logo_height, 0:logo_width]
+        roi[np.where(logo_gray != 255)] = logo[np.where(logo_gray != 255)]
+
         cv2.imshow('MediaPipe Pose', image)
         if cv2.waitKey(5) & 0xFF == ord('q'):
             break
