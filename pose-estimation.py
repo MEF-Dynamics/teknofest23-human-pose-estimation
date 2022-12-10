@@ -26,7 +26,7 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 
 if __name__ == "__main__":
-    # 0 -> webcam
+    # 0           -> webcam
     # 'video.mp4' -> video file
     cap = cv2.VideoCapture(0)
 
