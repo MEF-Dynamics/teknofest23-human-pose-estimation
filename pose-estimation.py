@@ -65,8 +65,8 @@ if __name__ == "__main__":
             l_hip_x = int(lm.landmark[lmPose.LEFT_HIP].x * w)
             l_hip_y = int(lm.landmark[lmPose.LEFT_HIP].y * h)
 
-            neck_inclination = findAngle(l_shldr_x, l_shldr_y, l_ear_x, l_ear_y)
-            torso_inclination = findAngle(l_hip_x, l_hip_y, l_shldr_x, l_shldr_y)
+            neck_to_back = findAngle(l_shldr_x, l_shldr_y, l_ear_x, l_ear_y)
+            body_to_back = findAngle(l_hip_x, l_hip_y, l_shldr_x, l_shldr_y)
 
             cv2.circle(image, (l_shldr_x, l_shldr_y), 7, yellow, -1)
             cv2.circle(image, (l_ear_x, l_ear_y), 7, yellow, -1)
@@ -75,10 +75,18 @@ if __name__ == "__main__":
             cv2.circle(image, (l_hip_x, l_hip_y), 7, yellow, -1)
             cv2.circle(image, (l_hip_x, l_hip_y - 100), 7, yellow, -1)
 
-            color = green if neck_inclination < 40 and torso_inclination < 10 else red
+            if neck_to_back < 40 and body_to_back < 10:
+                color = green
+                # Add "Duruş bozukluğu yok" text to top right corner
+                cv2.putText(image, 'Durus Bozuklugu Yok', (w - 400, 50), font, 1, color, 2)
 
-            cv2.putText(image, str(int(neck_inclination)), (l_shldr_x + 10, l_shldr_y), font, 0.9, color, 2)
-            cv2.putText(image, str(int(torso_inclination)), (l_hip_x + 10, l_hip_y), font, 0.9, color, 2)
+            else:
+                color = red
+                cv2.putText(image, 'Durusunuz Bozuk !!!', (w - 400, 50), font, 1, color, 2)
+                cv2.putText(image, 'Durusunuzu Duzeltin', (w - 400, 80), font, 1, color, 2)
+
+            cv2.putText(image, str(int(neck_to_back)), (l_shldr_x + 10, l_shldr_y), font, 0.9, color, 2)
+            cv2.putText(image, str(int(body_to_back)), (l_hip_x + 10, l_hip_y), font, 0.9, color, 2)
             cv2.line(image, (l_shldr_x, l_shldr_y), (l_ear_x, l_ear_y), color, 4)
             cv2.line(image, (l_shldr_x, l_shldr_y), (l_shldr_x, l_shldr_y - 100), color, 4)
             cv2.line(image, (l_hip_x, l_hip_y), (l_shldr_x, l_shldr_y), color, 4)
