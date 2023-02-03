@@ -1,4 +1,11 @@
-mediapipe==0.8.9.1
-opencv-python
-protobuf==3.20
-numpy
+pygrabber==0.1
+pillow==9.4.0
+matplotlib==3.6.3
+mediapipe==0.9.1.0
+pygame==2.1.2
+sqlalchemy==2.0.1
+joblib==1.2.0
+opencv_python==4.7.0.68
+sklearn==0.0
+scikit_learn==1.2.1
+psycopg2==2.9.5
